@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function doSomeStuff(){
+            // // let x = "X99"; ----------- makes type string b/c the string starts with "X"
+            // let x = "99X";----------- makes type number b/c string starts with 9, omits the X when parseInt()
+            // x = parseInt(x) +1; // ------------- converts x to a number and adds 1
+            // // x += 1; -------------  keeps x as a string
+            // console.log(`x=${x}`);
+            // console.log(`x Type = ${typeof x}`);
+
+            let x;          // undefined b/c it is never on the left side of an expression
+            // x = "HAPPY";
+            // x += 'and sad' //string
+            // x=3.1415; // number
+            // x = []; // an array is an object
+            // x = {}; // an object literal
+            x = "blah" /100;
+            // checkType(x);
+            checkType2(x);
+            function checkType(n) {
+                let msg = `input is of type: ${typeof n}`;
+                let resObj = document.getElementById("results");
+                if (resObj === null){
+                    alert("resObj is null");
+                }
+                if (x == null){
+                    alert("null");
+                }
+                resObj.innerHTML = msg;
+            }
+            function checkType2(n) {
+                let msg = `input is of type: ${typeof n}`;
+                let resObj = document.getElementById("results");
+                if(isNaN(n)){
+                    alert("is NaN");
+                }
+                resObj.innerHTML = msg;
+            }
+
+        }
+    </script>
+</head>
+<body>
+    <button type="button" onclick="doSomeStuff()">Click Me </button>
+    <div id="results"></div>
+</body>
+</html>

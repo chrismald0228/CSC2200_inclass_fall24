@@ -12,8 +12,8 @@
         // console.log(`Age is:${userAge}`)
         console.log(`Age Type:${typeof userAge}`)
         //we have string and number as data type so far
-        // let age = parseInt(userAge);
-        let age = userAge;
+        let age = parseInt(userAge);
+        // let age = userAge;
         console.log(`Age2 type :${typeof age}`)
         console.log(`Age2=:${age}`)
         let isOK = true;
@@ -44,7 +44,7 @@
 <body>
     <h2>Show your Rights</h2>
     <form>
-        Age: <input type="text" name="age" id="uAge">
+        Age: <input type="input" name="age" id="uAge">
         <button type="button" onclick="doAge()">Click to Start</button>
     </form>
     <div id="results">Your results here:</div>
