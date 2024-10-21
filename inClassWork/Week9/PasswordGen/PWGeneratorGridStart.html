@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Generator</title>
+  <link rel="stylesheet" href="css/pwGenMain.css" />
+  <script>
+    function doPassword(){
+      const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+      const SYMBOLS = "@!#$%&*)(^";
+      const lenObj = parseInt(document.getElementById("length").value);
+
+      if(isNaN(lenObj) || lenObj < 4 || lenObj > 10){
+        let obj = document.getElementById("passwordOutput");
+        obj.innerHTML = `<span style=color:red> Illegal output ${lenObj} </span>`;
+      } else {
+        const useSymbols = document.getElementById("symbols").checked;
+
+        let charSet = CHARS;
+        if (useSymbols){
+          charSet += SYMBOLS;
+        }
+        let password = "";
+        let ct = 0;
+        while (ct++ < lenObj){
+        // for(let i =0; i< lenObj; i++){
+          const randIndex = Math.floor(Math.random() * charSet.length);
+          password += charSet[randIndex];
+          // ct += 1
+        }
+        // let obj = document.getElementById("passwordOutput");
+        // obj.textContent = password;
+        // OR //
+        document.getElementById("passwordOutput").textContent = password;
+      }
+    }
+  </script>
+</head>
+<!--<body onLoad="doPassWord()">-->
+<body>
+<div class="password-generator">
+  <h2>Password Generator</h2>
+
+  <label for="length">Password Length:</label>
+  <input type="number" id="length" min="4" value="8" required>
+
+  <div class="checkbox-group">
+    <input type="checkbox" id="symbols">
+    <label for="symbols">Include Symbols</label>
+  </div>
+
+  <button id="generatePassword" onclick="doPassword()">Generate Password</button>
+
+  <div class="password-output" id="passwordOutput">Your password will appear here</div>
+</div>
+
+
+</body>
+</html>
