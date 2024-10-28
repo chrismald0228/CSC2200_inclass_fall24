@@ -63,7 +63,7 @@
     <script>
         // Array of secret words
         // const wordsArray = ["apple", "grape", "peach", "melon", "berry", "plumb"];
-        const wordsArray = ["ape","boy","tee"];
+        const wordsArray = ["apple"];
         let originalSecretWord = ""; // Store the original word for correct comparisons
         let secretWord = "";
         let showSecretWord = "";
@@ -71,14 +71,18 @@
 
         function guessIt(){
             const isGuessLetter = document.getElementById("mode-letter").checked;
+            const isGuessWord = document.getElementById("mode-word").checked;
             if(isGuessLetter){
                 guessLetter();
-            } else {
-                alert("not ready for prime time");
+            } else if (isGuessWord){
+                guessWord();
+            }
+            else {
+                alert("should not have happened");
             }
         }
         function guessLetter(){
-            let l = document.getElementById("letter").value;
+            let l = document.getElementById("letter").value; // get letter
             let response = letterIsGood(l);
             if(!response.respOK){
                 let oStr = "Error Illegal input: "+response.reason;
@@ -93,13 +97,36 @@
                     numWrong += 1;
                     img = "no.png";
                 } else {
-                    alert("todo good guess")
+                    // guess correctly
+                    while (idx !== -1) {
+                        showSecretWord = showSecretWord.substring(0, idx) + l
+                            + showSecretWord.substring(idx +1);
+
+                        secretWord = secretWord.substring(0, idx) + "*"
+                            + secretWord.substring(idx +1);
+                        idx = secretWord.indexOf(l); /// check again if 'l' is in the string
+                        img = "yes.png";
+                    }
                 }
-                showSecretWord(img);
+                showSecretWordSoFar(img);
             }
         }
-        function letterIsGood(l){
-            let response = {
+        function guessWord(){
+            let w = document.getElementById("letter").value;
+            let img = "no.png"
+            if (w.toLowerCase() === originalSecretWord.toLowerCase()){
+                showSecretWord = originalSecretWord;
+                img = 'win.png';
+                alert("winner");
+                document.getElementById("submit").style.display= 'none';
+                document.getElementById("reset").style.display= 'block';
+            } else {
+                numWrong++;
+            }
+            showSecretWordSoFar(img);
+        }
+        function letterIsGood(l){  // returns object responses
+            let response = {       // javascript object literal; the variable holds multiple attributes (member variables)
                 respOK : true,
                 response : ""
             };
@@ -128,6 +155,7 @@
             oStr += `<img src='imgs/${img}' width=50 />`;
             // alert( oStr )
             document.getElementById("results").innerHTML = oStr;
+            document.getElementById("letter").value = "";
         }
 
         window.onload = function() {
@@ -138,6 +166,8 @@
             // Attach the event listener for the button
             const submitButton = document.querySelector("button");
             submitButton.addEventListener("click", guessIt);
+            document.getElementById("reset").addEventListener("click", guessIt);
+
         };
     </script>
 </head>
@@ -156,7 +186,8 @@
 
         <label for="letter" class="Letter">Input:</label>
         <input id="letter" type="text">
-        <button>Submit</button>
+        <button id="submit">Submit</button>
+        <button id="reset" style="display: none">Reset</button>
         <br />
         <label for="results" class="Results">Results:</label>
         <span id="results"> results</span>
