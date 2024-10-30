@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+      window.onload = function() {
+        // this is an object literal syntax; containers for data
+        const person = {    // used to define a single object
+          name : "jack",
+          interests : ['guitar','baseball','music'],
+          likeMusic : function () {
+            for(let i=0;i<this.interests.length; i++){
+              if(this.interests[i] === 'music'){
+                return true;
+              }
+            }
+            return false
+          }
+        };
+
+        function superHero(name,power, damage){ //constructor syntax; can be used as a template to make new objects
+          this.name = name;
+          this.power = power;
+          this.damage = damage;
+
+          this.damageMoreThan = function(d){
+            if(this.damage > d){
+              return true;
+            }
+            return false;
+          }
+        }
+
+        let b1 = document.getElementById("b1");
+        b1.addEventListener(`click`, () => {   // (first parameter, function to run when event occurs)
+          let oStr = `name is ${person.name}` ; //     () =>  ------ anonymous function, arrow runs the code in the brackets
+          oStr += `interest1:${person.interests[0]}` ;
+          oStr += `interest1:${person.interests[1]}` ;
+          person.interests = [];
+          oStr +=  `and like music: ${person.likeMusic()} `
+
+          document.getElementById("results").innerHTML = oStr;
+        });
+        document.getElementById("b2").addEventListener('click', () => {
+          // alert("clicked b2");
+          let hulk = new superHero('hulk','smash',1000);
+          let ironMan = new superHero('IronMan','money',500);
+          alert(`s1: ${hulk.name} morethan 10 ${hulk.damageMoreThan(10)}`)
+          alert(`s2: ${ironMan.name}  morethan 10 ${hulk.damageMoreThan(10)}`)
+        });
+      }
+    </script>
+</head>
+<body>
+  <h2>click to start</h2>
+  <button id="b1"type="button">Start</button>
+  <button id="b2" type="button">Start b2</button>
+  <div id="results"></div>
+</body>
+</html>
