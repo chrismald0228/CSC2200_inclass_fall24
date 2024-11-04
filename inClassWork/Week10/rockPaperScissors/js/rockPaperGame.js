@@ -6,6 +6,9 @@ const ui = {
     updateDisplayValue: function(value, disId) {
         document.getElementById(disId).innerText = value;
     },
+    updateResultValue: function(value, disId) {
+
+    },
     updateStatsDisplay: function(state) {
         this.updateDisplayValue(state.wins, "wins");
         this.updateDisplayValue(state.losses, "loss");
@@ -27,7 +30,7 @@ const game = {
     messages: {
         win: "Winner!",
         loss: "Loser!",
-        draw: "Draw!"
+        draw: "Draw!",
     },
     getRandomInt: function(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
