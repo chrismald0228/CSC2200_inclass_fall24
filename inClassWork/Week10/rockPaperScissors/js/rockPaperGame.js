@@ -1,53 +1,63 @@
 const ui = {
+    displayImage: function(pickObj, disId) {
+        const imgHtml = `<img src='imgs/${pickObj.img}' width='100px' alt="${pickObj.item}"'>`;
+        document.getElementById(disId).innerHTML = imgHtml;
+    },
+    updateDisplayValue: function(value, disId) {
+        document.getElementById(disId).innerText = value;
+    },
+    updateStatsDisplay: function(state) {
+        this.updateDisplayValue(state.wins, "wins");
+        this.updateDisplayValue(state.losses, "loss");
+        this.updateDisplayValue(state.draws, "draws");
+    }
+};
 
-}
 const game = {
-    rules : [
-        {id : 0, item: 'rock', img : "rock.webp", beats : 'scissors'},
-        {id : 1, item: 'paper', img : "paper.webp", beats : 'rock'},
-        {id : 2, item: 'scissors', img : "scissors.webp", beats : 'paper'},
+    rules: [
+        { id: 0, item: 'rock', beats: 'scissors', img: 'rock.PNG' },
+        { id: 1, item: 'paper', beats: 'rock', img: 'paper.PNG' },
+        { id: 2, item: 'scissors', beats: 'paper', img: 'scissors.PNG' }
     ],
-    state : {
-        wins : 0,
-        loses : 0,
-        draws : 0
+    state: {
+        wins: 0,
+        losses: 0,
+        draws: 0
     },
-    messages : {
-        win : "winner",
-        loss : "loser",
-        draw : "draw"
+    messages: {
+        win: "Winner!",
+        loss: "Loser!",
+        draw: "Draw!"
     },
-    getRandomInt: function (min, max) {
+    getRandomInt: function(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     },
-    evaluateResults: function (cPickObj, uPickObj){
-        if(uPickObj.beats === cPickObj.item){
+    evaluateResult: function(cPickObj, uPickObj) {
+        if (uPickObj.beats === cPickObj.item) {
             this.state.wins++;
             return this.messages.win;
-        } else if(cPickObj.beats === uPickObj.item){
-            this.state.loses++;
+        } else if (cPickObj.beats === uPickObj.item) {
+            this.state.losses++;
             return this.messages.loss;
-        }
-        else {
+        } else {
             this.state.draws++;
             return this.messages.draw;
         }
     }
-}
+};
 
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("mainButton").addEventListener("click",
-        () => {
-            const cPick = game.getRandomInt(0, 2);
-            const cObj = game.rules[cPick]; // returns row of cPick
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("mainButton").addEventListener("click", function() {
+        const cPickIndex = game.getRandomInt(0, 2);
+        const cPickObj = game.rules[cPickIndex];
+        ui.displayImage(cPickObj, "cPick");
 
-            const uPickIndex = document.getElementById("sel1").value;
-            const uObj = game.rules[uPickIndex];
+        const uPickIndex = parseInt(document.getElementById("sel1").value);
+        const uPickObj = game.rules[uPickIndex];
+        ui.displayImage(uPickObj, "uPick");
 
-            const resultMsg = game.evaluateResults(cObj, uObj);
-            console.log("computer --->", cObj.item);
-            console.log("user --->", uObj.item);
-            console.log('resut: '+ resultMsg);
-        })
-
-})
+        const resultMessage = game.evaluateResult(cPickObj, uPickObj);
+        ui.updateDisplayValue(resultMessage, "resArea");
+        ui.updateStatsDisplay(game.state); // Call to update all stats
+    });
+});
