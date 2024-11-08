@@ -60,7 +60,22 @@ const gameBoard = {
         document.getElementById("move-count").textContent = `Moves: ${this.moves}`;
     },
     move(direction){
-        alert('inside move direction: ' + direction);
+        // alert('inside move direction: ' + direction);
+        let pRow = this.playerPos.row;
+        let pCol = this.playerPos.col;
+        switch (direction) {
+            case 'up':
+                alert('update up');
+                break;
+            case 'down':
+                alert('update down');
+                break;
+            case 'left':
+                alert('update left');
+                break;
+            case 'right':
+                break;
+        }
     }
 }
 
