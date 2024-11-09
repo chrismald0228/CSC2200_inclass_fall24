@@ -18,6 +18,7 @@ const ui = {
         this.updateDisplayValue(state.wins, "wins");
         this.updateDisplayValue(state.losses, "loss");
         this.updateDisplayValue(state.draws, "draws");
+        this.updateDisplayValue(state.winnings, "tWins");
     }
 };
 
@@ -30,10 +31,11 @@ const game = {
     state: {
         wins: 0,
         losses: 0,
-        draws: 0
+        draws: 0,
+        winnings: 0
     },
     messages: {
-        win: {msg : "Winner!", img : 'homerWin.jpg', alt:"Homer Wins!"},
+        win: {msg : "Winner!", img : 'homerWin.png', alt:"Homer Wins!"},
         loss: {msg : "Loser!", img: 'homerLoss.png', alt:"Homer Loss!"},
         draw: {msg : "Draw!", img: 'homerTied.png', alt : "Homer Tied up!"}
     },
@@ -54,7 +56,34 @@ const game = {
             // alert( "Draw");
             return this.messages.draw;
         }
+    },
+    evaluateWinnings: function(result){
+        let betDOM = document.getElementById('bet');
+        let bet = parseInt(betDOM.value);
+        if(result === this.messages.win){
+            this.state.winnings += bet;
+        } else if(result === this.messages.loss){
+            this.state.winnings -= bet;
+        }
+        return this.state.winnings;
+    },
+    reset: function() {
+        this.state.wins = 0;
+        this.state.winnings = 0;
+        this.state.losses = 0;
+        this.state.draws = 0;
+    },
+    checkGameResults: function(){
+        if(this.state.winnings >= 100){
+            alert("You win !!!")
+            this.reset()
+        } else if(this.state.winnings <= -100){
+            alert("You lost ...")
+            this.reset()
+        }
+
     }
+
 };
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -69,7 +98,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const resultObj = game.evaluateResult(cPickObj, uPickObj);
         // document.getElementById("resArea").innerHTML = resultMessage;
+        game.evaluateWinnings(resultObj);
+        game.checkGameResults();
         ui.updateDisplayObj(resultObj, "resArea");
         ui.updateStatsDisplay(game.state); // Call to update all stats
+    });
+    document.getElementById("resetButton").addEventListener("click", function(){
+        game.reset();
+        ui.updateStatsDisplay(game.state);
+        document.getElementById('bet').value = 0;
     });
 });
