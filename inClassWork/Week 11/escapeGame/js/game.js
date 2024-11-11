@@ -63,20 +63,51 @@ const gameBoard = {
         // alert('inside move direction: ' + direction);
         let pRow = this.playerPos.row;
         let pCol = this.playerPos.col;
+
+        // pRow = 3; //used for testing
+        // pCol = 3; // used for testing
         switch (direction) {
             case 'up':
-                alert('update up');
+                pRow = Math.max(0, pRow - 1);
                 break;
             case 'down':
-                alert('update down');
+                pRow = Math.min(this.size-1, pRow + 1);
                 break;
             case 'left':
-                alert('update left');
+                pCol = Math.max(0, pCol - 1);
                 break;
             case 'right':
+                pCol = Math.min(this.size-1, pCol + 1);
                 break;
         }
-    }
+        // alert(`Inside move direction: new row--${pRow} new col--${pCol}`)
+        if(this.board[pRow][pCol] !== "O"){
+             this.board[this.playerPos.row][this.playerPos.col] = ``; //updates the players current position to be empty
+             this.playerPos.row = pRow;
+             this.playerPos.col = pCol;
+             this.moves++;
+             if(this.board[pRow][pCol] === "P"){
+                 this.score++;
+                 this.board[pRow][pCol] = '';
+                 //this is collectable **this.collectables.push({row: row, col:col}) **
+                 this.collectables = this.collectables.filter( collectable =>   //filters out from the original collectable array
+                     !(collectable.row === pRow && collectable.col === pCol)    //the current collectible position and sets collectibles
+
+                 );
+                 this.showNotification("collected and item")
+             }
+             this.board[this.playerPos.row][this.playerPos.col] = "P";
+             this.render(); // shows the updated board
+        }
+    },
+    showNotification(msg){
+        const notification = document.getElementById("notification");
+        notification.innerHTML = msg;
+        setTimeout(()=>{
+            notification.innerText = '';
+        }, 3000);
+    },
+
 }
 
 
