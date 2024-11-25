@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LocalStorage Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    .container {
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 5px;
+    }
+    .stored-value {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+    }
+    input {
+      padding: 5px;
+      margin-right: 10px;
+    }
+    button {
+      padding: 5px 10px;
+      margin-right: 5px;
+    }
+    .delete-btn {
+      background-color: #ff4444;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>LocalStorage Demo</h2>
+  <div>
+    <input type="text" id="userInput" placeholder="Enter text to save in localStorage">
+    <button onclick="saveToLocalStorage()">Save</button>
+    <button onclick="deleteFromLocalStorage()" class="delete-btn">Delete Value</button>
+  </div>
+<!--  container that holds the value, hidden when not in use -->
+  <div id="localStorageDisplay" class="stored-value" style="display: none;">
+    <p>Stored LocalStorage Value:</p>
+    <p id="localStorageValue"></p>
+  </div>
+</div>
+
+<script>
+  // Function to save value in localStorage
+  //get item form document
+  function displayLocalStorageValue(value){
+    const displayArea = document.getElementById('localStorageDisplay');
+    const valueElement = document.getElementById('localStorageValue');
+
+    //makes the area appear as a block
+    displayArea.style.display = 'block';
+    valueElement.textContent = value;
+  }
+  function saveToLocalStorage (){
+    let userValue = document.getElementById('userInput').value;
+    if(userValue){
+      localStorage.setItem('userInput', userValue); // saves user input to local storage
+      displayLocalStorageValue(userValue);
+      alert(`local value: ${userValue}`)
+      document.getElementById('userInput').value = ''; //clear input
+    }
+  }
+  function deleteFromLocalStorage(){
+    const displayArea = document.getElementById('localStorageDisplay');
+    localStorage.removeItem('userInput');
+    displayArea.style.display = 'none';
+    document.getElementById('userInput').value = '';
+  }
+  window.onload = function() {
+    //on load, sets existingValue to local storage with key 'userinput'
+    const existingValue = localStorage.getItem('userInput');
+    //checks to see if there is a value saved, if there is update the display
+    if(existingValue){
+      displayLocalStorageValue(existingValue);
+    }
+  }
+</script>
+</body>
+</html>
