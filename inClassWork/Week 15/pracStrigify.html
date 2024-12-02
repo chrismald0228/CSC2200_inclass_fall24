@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <script>
+    const menu = {
+      menuItems: [
+        {
+          name: "Burger",
+          price: 5.99,
+        },
+        {
+          name: "Pizza",
+          price: 8.99,
+        },
+        {
+          name: "Salad",
+          price: 4.99,
+
+        }
+      ]
+    };
+    let stringVersion = '';
+    function makeString() {
+      let string1 = JSON.stringify(menu);
+      stringVersion = string1;
+      document.getElementById('results').innerHTML = string1
+      // alert("string")
+    }
+    function makeObject() {
+      let nObj = JSON.parse(stringVersion);
+      document.getElementById('results').innerHTML = nObj.menuItems[0].name;
+      // alert("object")
+    }
+
+
+  </script>
+</head>
+<body>
+  <button type="button" onClick="makeString()">String</button>
+  <button type="button" onClick="makeObject()">Object</button>
+<div id="results"></div>
+</body>
+</html>
