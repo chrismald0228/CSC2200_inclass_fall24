@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Title</title>
+    <link rel='stylesheet' href="css/fullGenMain.css">
+    <style>
+        #special {
+            background-color: yellow;
+        }
+
+        td {
+            background-color: yellowgreen;
+        }
+    </style>
+    <script>
+        let total = 0;
+        let myBooks = [];
+        function moreInfo(id){
+            alert('clicked id=' + id);
+        }
+        function countClick(id) {
+            alert("Count click");
+        }
+
+        function showTable() {
+            let url = "http://45.55.136.114/~dlash/CSC3700/books.php";
+            //this is asynchronous, which means that after url runs (above), while the fetch executes console.log will
+            //run. kind of like side process (?)
+            fetch(url)
+                .then(response => response.json())  // takes the JSON string data from the url and returns an object
+                .then(data => { //This is what we want to do with the data
+                    // console.log('data ='); console.log(data);
+                    let res = '';
+                    for(let i=0;i<data.length;i++){
+                        let r = data[i];
+                        myBooks.push(r);
+                        let row = `<tr> <td> ${r.title}</td>`;
+                            row += `<td>${r.author}</td>`;
+                            row += `<td>${r.description}</td> </tr>`;
+                            row += `<td> <button type="button" onClick="moreInfo(${r.id})">ID: ${r.id}</button> </td>`;
+                            row +=`</tr>`
+                            // alert(row);
+                        res += row;
+                    }
+                    let tableArea = document.getElementById('mainTable');
+                    tableArea.innerHTML = res;
+                    // data.forEach(data => item)  // only works with arrays
+                }).catch(error => { //if there is an error, it alerts
+                    alert('it broke');
+            });
+            console.log("hello")
+        }
+    </script>
+</head>
+
+<body onLoad="showTable()">
+<header>
+    <img id="logo" src="imgs/logo.png"/>
+    <h1 class="mainTitle"> Books 4 u </h1>
+</header>
+<article>
+    <h1 id="title">
+        Here is our current store of books
+    </h1>
+    <main>
+        <table id='bookTable'>
+            <thead>
+            <tr>
+                <th> Title</th>
+                <th> Author</th>
+                <th> Description</th>
+            </tr>
+            </thead>
+            <tbody id="mainTable">
+
+            </tbody>
+        </table>
+    </main>
+</article>
+<footer>
+    &copy; 2023 - Built for <a href="http://www.aurora.edu"> Aurora University </a>
+    <span style='position: relative; left: 10px' id="results"> 00 </span>
+</footer>
+
+</body>
+</html>
